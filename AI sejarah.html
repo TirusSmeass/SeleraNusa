@@ -1,0 +1,235 @@
+<html class="scroll-smooth" lang="id">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>
+   AI Sejarah Kuliner Daerah
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&amp;display=swap" rel="stylesheet"/>
+  <style>
+   body {
+      font-family: 'Roboto', sans-serif;
+    }
+  </style>
+ </head>
+ <body class="bg-gray-50 min-h-screen flex flex-col">
+  <header class="bg-yellow-400 shadow-md">
+   <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+     <img alt="Logo mangkok sup tradisional berwarna kuning" class="w-12 h-12" height="48" src="logo (2).png" width="48"/>
+     <h1 class="text-2xl font-bold text-white">
+      AI Sejarah Kuliner Daerah
+     </h1>
+    </div>
+   </div>
+  </header>
+  <main class="flex-grow container mx-auto px-4 py-8 max-w-3xl">
+   <section class="mb-8">
+    <h2 class="text-xl font-semibold mb-3 text-gray-800 text-center">
+     Tanyakan apa saja tentang sejarah kuliner daerah Indonesia
+    </h2>
+    <form class="flex flex-col sm:flex-row gap-4" id="questionForm">
+     <input aria-label="Input pertanyaan sejarah kuliner daerah" class="flex-grow rounded-md border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400" id="questionInput" placeholder="Contoh: Apa asal usul rendang?" required="" type="text"/>
+     <button aria-label="Kirim pertanyaan" class="bg-yellow-400 hover:bg-yellow-500 text-white font-semibold rounded-md px-6 py-3 flex items-center justify-center transition" type="submit">
+      <i class="fas fa-paper-plane mr-2">
+      </i>
+      Kirim
+     </button>
+    </form>
+   </section>
+   <section class="bg-white rounded-lg shadow-md p-6 min-h-[150px] text-gray-700 text-justify" id="answerSection">
+    <p class="text-center text-gray-400 italic" id="placeholderText">
+     Jawaban akan muncul di sini setelah Anda mengajukan pertanyaan.
+    </p>
+   </section>
+  </main>
+  <footer class="bg-yellow-400 text-white py-4 mt-auto">
+   <div class="container mx-auto px-4 text-center text-sm">
+    © 2025 anarus.
+   </div>
+  </footer>
+  <script>
+   // Data sejarah kuliner daerah Indonesia (sample data)
+    const kulinerData = [
+      {
+        nama: "Rendang",
+        daerah: "Sumatera Barat",
+        sejarah:
+          "Rendang adalah masakan daging yang dimasak dengan santan dan rempah-rempah khas Minangkabau, Sumatera Barat. Asal usul rendang berasal dari tradisi memasak masyarakat Minangkabau yang menggunakan teknik memasak lambat agar daging tahan lama dan bisa disimpan dalam perjalanan jauh.",
+      },
+      {
+        nama: "Gudeg",
+        daerah: "Yogyakarta",
+        sejarah:
+          "Gudeg adalah masakan khas Yogyakarta yang terbuat dari nangka muda yang dimasak dengan santan dan gula merah selama berjam-jam. Gudeg memiliki rasa manis dan gurih, dan merupakan makanan tradisional yang sudah ada sejak zaman kerajaan Mataram.",
+      },
+      {
+        nama: "Pempek",
+        daerah: "Palembang",
+        sejarah:
+          "Pempek adalah makanan khas Palembang yang terbuat dari ikan dan tepung sagu. Pempek dipercaya berasal dari pengaruh budaya Tionghoa yang beradaptasi dengan bahan lokal di Palembang.",
+      },
+      {
+        nama: "Soto Betawi",
+        daerah: "Jakarta",
+        sejarah:
+          "Soto Betawi adalah soto khas Jakarta yang menggunakan kuah santan dan daging sapi atau jeroan. Soto ini berkembang dari budaya Betawi yang merupakan campuran berbagai etnis di Jakarta.",
+      },
+      {
+        nama: "Papeda",
+        daerah: "Papua",
+        sejarah:
+          "Papeda adalah makanan khas Papua yang terbuat dari sagu yang dimasak hingga kental dan lengket. Papeda biasanya disajikan dengan ikan kuah kuning dan merupakan makanan pokok masyarakat Papua.",
+      },
+      {
+        nama: "Coto Makassar",
+        daerah: "Makassar",
+        sejarah:
+          "Coto Makassar adalah sup daging khas Makassar yang menggunakan rempah-rempah lokal dan kacang tanah. Coto sudah menjadi makanan tradisional sejak abad ke-16 dan sangat populer di Sulawesi Selatan.",
+      },
+      {
+        nama: "Nasi Liwet",
+        daerah: "Solo",
+        sejarah:
+          "Nasi Liwet adalah nasi yang dimasak dengan santan, daun salam, dan serai khas Solo. Nasi ini biasanya disajikan dengan lauk seperti ayam suwir dan telur pindang, dan merupakan bagian dari tradisi kuliner Jawa Tengah.",
+      },
+      {
+        nama: "Ayam Betutu",
+        daerah: "Bali",
+        sejarah:
+          "Ayam Betutu adalah ayam yang dibumbui rempah khas Bali dan dimasak dengan cara dibungkus daun pisang lalu dipanggang atau dikukus. Masakan ini merupakan hidangan upacara dan perayaan di Bali.",
+      },
+      {
+        nama: "Sate Madura",
+        daerah: "Madura",
+        sejarah:
+          "Sate Madura adalah sate khas Madura yang menggunakan daging ayam atau kambing dengan bumbu kacang manis dan pedas. Sate ini sudah dikenal luas di seluruh Indonesia dan menjadi ikon kuliner Madura.",
+      },
+      {
+        nama: "Lontong Balap",
+        daerah: "Surabaya",
+        sejarah:
+          "Lontong Balap adalah makanan khas Surabaya yang terdiri dari lontong, tauge, lentho, dan kuah kacang. Makanan ini berasal dari tradisi masyarakat Surabaya dan sangat populer sebagai makanan sarapan.",
+      },
+      {
+        nama: "Kerak Telor",
+        daerah: "Jakarta",
+        sejarah:
+          "Kerak Telor adalah makanan khas Betawi berupa telur bebek yang dicampur dengan beras ketan dan kelapa parut, lalu dibakar di atas arang. Makanan ini merupakan jajanan tradisional yang sering ditemukan di festival dan pasar malam Jakarta.",
+      },
+      {
+        nama: "Bakso Malang",
+        daerah: "Malang",
+        sejarah:
+          "Bakso Malang adalah bakso khas Malang yang disajikan dengan berbagai pelengkap seperti tahu, pangsit, dan mie. Bakso ini berkembang sejak tahun 1950-an dan menjadi ikon kuliner Jawa Timur.",
+      },
+      {
+        nama: "Es Cendol",
+        daerah: "Jawa Barat",
+        sejarah:
+          "Es Cendol adalah minuman tradisional yang terbuat dari tepung beras hijau, santan, dan gula merah cair. Minuman ini sangat populer di Jawa Barat dan sering dinikmati sebagai pelepas dahaga di cuaca panas.",
+      },
+      {
+        nama: "Nasi Uduk",
+        daerah: "Jakarta",
+        sejarah:
+          "Nasi Uduk adalah nasi yang dimasak dengan santan dan rempah-rempah khas Betawi. Nasi ini biasanya disajikan dengan lauk pauk seperti ayam goreng, telur, dan sambal, dan merupakan makanan favorit masyarakat Jakarta.",
+      },
+      {
+        nama: "Dodol Garut",
+        daerah: "Garut",
+        sejarah:
+          "Dodol Garut adalah makanan manis khas Garut yang terbuat dari campuran gula merah, santan, dan tepung ketan yang dimasak hingga kental dan lengket. Dodol ini sudah menjadi oleh-oleh khas dari daerah Garut, Jawa Barat.",
+      }
+    ];
+
+    // Fungsi untuk mencari jawaban berdasarkan pertanyaan
+    function cariJawaban(pertanyaan) {
+      const p = pertanyaan.toLowerCase();
+
+      // Cek apakah pertanyaan mengandung nama kuliner dari data
+      for (const item of kulinerData) {
+        if (
+          p.includes(item.nama.toLowerCase()) ||
+          p.includes(item.daerah.toLowerCase())
+        ) {
+          return `<strong>${item.nama} (${item.daerah})</strong><br>${item.sejarah}`;
+        }
+      }
+
+      // Jika tidak ditemukan, coba cari kata kunci umum
+      if (p.includes("rendang")) {
+        return `<strong>Rendang (Sumatera Barat)</strong><br>Rendang adalah masakan daging yang dimasak dengan santan dan rempah-rempah khas Minangkabau, Sumatera Barat. Asal usul rendang berasal dari tradisi memasak masyarakat Minangkabau yang menggunakan teknik memasak lambat agar daging tahan lama dan bisa disimpan dalam perjalanan jauh.`;
+      }
+      if (p.includes("gudeg")) {
+        return `<strong>Gudeg (Yogyakarta)</strong><br>Gudeg adalah masakan khas Yogyakarta yang terbuat dari nangka muda yang dimasak dengan santan dan gula merah selama berjam-jam. Gudeg memiliki rasa manis dan gurih, dan merupakan makanan tradisional yang sudah ada sejak zaman kerajaan Mataram.`;
+      }
+      if (p.includes("pempek")) {
+        return `<strong>Pempek (Palembang)</strong><br>Pempek adalah makanan khas Palembang yang terbuat dari ikan dan tepung sagu. Pempek dipercaya berasal dari pengaruh budaya Tionghoa yang beradaptasi dengan bahan lokal di Palembang.`;
+      }
+      if (p.includes("soto betawi")) {
+        return `<strong>Soto Betawi (Jakarta)</strong><br>Soto Betawi adalah soto khas Jakarta yang menggunakan kuah santan dan daging sapi atau jeroan. Soto ini berkembang dari budaya Betawi yang merupakan campuran berbagai etnis di Jakarta.`;
+      }
+      if (p.includes("papeda")) {
+        return `<strong>Papeda (Papua)</strong><br>Papeda adalah makanan khas Papua yang terbuat dari sagu yang dimasak hingga kental dan lengket. Papeda biasanya disajikan dengan ikan kuah kuning dan merupakan makanan pokok masyarakat Papua.`;
+      }
+      if (p.includes("coto makassar")) {
+        return `<strong>Coto Makassar (Makassar)</strong><br>Coto Makassar adalah sup daging khas Makassar yang menggunakan rempah-rempah lokal dan kacang tanah. Coto sudah menjadi makanan tradisional sejak abad ke-16 dan sangat populer di Sulawesi Selatan.`;
+      }
+      if (p.includes("nasi liwet")) {
+        return `<strong>Nasi Liwet (Solo)</strong><br>Nasi Liwet adalah nasi yang dimasak dengan santan, daun salam, dan serai khas Solo. Nasi ini biasanya disajikan dengan lauk seperti ayam suwir dan telur pindang, dan merupakan bagian dari tradisi kuliner Jawa Tengah.`;
+      }
+      if (p.includes("ayam betutu")) {
+        return `<strong>Ayam Betutu (Bali)</strong><br>Ayam Betutu adalah ayam yang dibumbui rempah khas Bali dan dimasak dengan cara dibungkus daun pisang lalu dipanggang atau dikukus. Masakan ini merupakan hidangan upacara dan perayaan di Bali.`;
+      }
+      if (p.includes("sate madura")) {
+        return `<strong>Sate Madura (Madura)</strong><br>Sate Madura adalah sate khas Madura yang menggunakan daging ayam atau kambing dengan bumbu kacang manis dan pedas. Sate ini sudah dikenal luas di seluruh Indonesia dan menjadi ikon kuliner Madura.`;
+      }
+      if (p.includes("lontong balap")) {
+        return `<strong>Lontong Balap (Surabaya)</strong><br>Lontong Balap adalah makanan khas Surabaya yang terdiri dari lontong, tauge, lentho, dan kuah kacang. Makanan ini berasal dari tradisi masyarakat Surabaya dan sangat populer sebagai makanan sarapan.`;
+      }
+      if (p.includes("kerak telor")) {
+        return `<strong>Kerak Telor (Jakarta)</strong><br>Kerak Telor adalah makanan khas Betawi berupa telur bebek yang dicampur dengan beras ketan dan kelapa parut, lalu dibakar di atas arang. Makanan ini merupakan jajanan tradisional yang sering ditemukan di festival dan pasar malam Jakarta.`;
+      }
+      if (p.includes("bakso malang")) {
+        return `<strong>Bakso Malang (Malang)</strong><br>Bakso Malang adalah bakso khas Malang yang disajikan dengan berbagai pelengkap seperti tahu, pangsit, dan mie. Bakso ini berkembang sejak tahun 1950-an dan menjadi ikon kuliner Jawa Timur.`;
+      }
+      if (p.includes("es cendol")) {
+        return `<strong>Es Cendol (Jawa Barat)</strong><br>Es Cendol adalah minuman tradisional yang terbuat dari tepung beras hijau, santan, dan gula merah cair. Minuman ini sangat populer di Jawa Barat dan sering dinikmati sebagai pelepas dahaga di cuaca panas.`;
+      }
+      if (p.includes("nasi uduk")) {
+        return `<strong>Nasi Uduk (Jakarta)</strong><br>Nasi Uduk adalah nasi yang dimasak dengan santan dan rempah-rempah khas Betawi. Nasi ini biasanya disajikan dengan lauk pauk seperti ayam goreng, telur, dan sambal, dan merupakan makanan favorit masyarakat Jakarta.`;
+      }
+      if (p.includes("dodol garut")) {
+        return `<strong>Dodol Garut (Garut)</strong><br>Dodol Garut adalah makanan manis khas Garut yang terbuat dari campuran gula merah, santan, dan tepung ketan yang dimasak hingga kental dan lengket. Dodol ini sudah menjadi oleh-oleh khas dari daerah Garut, Jawa Barat.`;
+      }
+
+      return "Maaf, saya belum memiliki informasi tentang kuliner tersebut. Silakan coba pertanyaan lain.";
+    }
+
+    const form = document.getElementById("questionForm");
+    const input = document.getElementById("questionInput");
+    const answerSection = document.getElementById("answerSection");
+    const placeholderText = document.getElementById("placeholderText");
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const question = input.value.trim();
+      if (!question) return;
+
+      placeholderText.style.display = "none";
+      answerSection.innerHTML = `<p class="text-center text-yellow-600 animate-pulse">Sedang mencari jawaban...</p>`;
+
+      setTimeout(() => {
+        const jawaban = cariJawaban(question);
+        answerSection.innerHTML = `<p>${jawaban}</p>`;
+      }, 800);
+
+      input.value = "";
+    });
+  </script>
+ </body>
+</html>

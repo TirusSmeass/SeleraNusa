@@ -1,0 +1,797 @@
+<html lang="en">
+ <head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>RasaNusantara - Platform Kuliner Lokal UMKM Indonesia</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter&amp;display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+  <style>
+    body {
+      font-family: "Inter", sans-serif;
+      background-color: #fff9e6;
+    }
+    /* Scrollbar for horizontal scroll */
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+    .scrollbar-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    /* Chatbot styles */
+    #chatbot {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 320px;
+      max-height: 400px;
+      background: #fff9e6;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgb(0 0 0 / 0.15);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      font-size: 14px;
+      z-index: 1000;
+      display: none;
+    }
+    #chatbot-header {
+      background-color: #ffb22c;
+      color: #3a2e00;
+      padding: 12px 16px;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: default;
+      box-shadow: 0 2px 6px rgb(255 178 44 / 0.6);
+    }
+    #chatbot-messages {
+      flex-grow: 1;
+      padding: 12px 16px;
+      overflow-y: auto;
+      background: #fff8d6;
+      color: #3a2e00;
+    }
+    .chatbot-message {
+      margin-bottom: 10px;
+      max-width: 80%;
+      padding: 8px 12px;
+      border-radius: 12px;
+      line-height: 1.3;
+      word-wrap: break-word;
+      white-space: pre-line;
+      font-weight: 500;
+      box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+    }
+    .chatbot-message.user {
+      background-color: #ffb22c;
+      color: #3a2e00;
+      align-self: flex-end;
+      border-bottom-right-radius: 0;
+      font-weight: 600;
+      box-shadow: 0 2px 6px rgb(255 178 44 / 0.7);
+    }
+    .chatbot-message.bot {
+      background-color: #fff8d6;
+      color: #3a2e00;
+      align-self: flex-start;
+      border-bottom-left-radius: 0;
+    }
+    #chatbot-input-container {
+      display: flex;
+      border-top: 1px solid #e6d88a;
+      padding: 8px 12px;
+      background: #fff9e6;
+    }
+    #chatbot-input {
+      flex-grow: 1;
+      border: 1px solid #ffb22c;
+      border-radius: 20px;
+      padding: 6px 12px;
+      font-size: 14px;
+      outline: none;
+      background-color: #fff8d6;
+      color: #3a2e00;
+      font-weight: 500;
+      transition: border-color 0.3s ease;
+    }
+    #chatbot-input:focus {
+      border-color: #f3c623;
+      box-shadow: 0 0 5px #f3c623;
+      background-color: #fff9e6;
+    }
+    #chatbot-send {
+      background-color: #ffb22c;
+      border: none;
+      color: #3a2e00;
+      padding: 6px 14px;
+      margin-left: 8px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      box-shadow: 0 2px 6px rgb(255 178 44 / 0.7);
+    }
+    #chatbot-send:hover {
+      background-color: #f3c623;
+      color: #fff9e6;
+    }
+    /* Chatbot toggle button */
+    #chatbot-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #ffb22c;
+      color: #3a2e00;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      box-shadow: 0 4px 12px rgb(255 178 44 / 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      z-index: 1001;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    #chatbot-toggle:hover {
+      background-color: #f3c623;
+      color: #fff9e6;
+    }
+    /* Dropdown styles */
+    .dropdown:hover .dropdown-menu {
+      display: block;
+    }
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      right: 0;
+      background-color: #fff9e6;
+      min-width: 160px;
+      box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
+      border-radius: 0.375rem;
+      z-index: 100;
+      border: 1px solid #ffb22c;
+    }
+    .dropdown-menu a {
+      display: block;
+      padding: 0.5rem 1rem;
+      color: #3a2e00;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+    .dropdown-menu a:hover {
+      background-color: #ffb22c;
+      color: #3a2e00;
+      font-weight: 700;
+    }
+    /* Navbar colors */
+    nav {
+      background-color: #fff9e6;
+      box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+    }
+    nav a,
+    nav button,
+    nav li > a,
+    nav li > button {
+      color: #3a2e00;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+    nav a:hover,
+    nav button:hover,
+    nav li > a:hover,
+    nav li > button:hover {
+      color: #ffb22c;
+    }
+    nav .font-extrabold,
+    nav .font-semibold {
+      color: #ffb22c;
+    }
+    nav .dropdown-menu a:hover {
+      background-color: #ffb22c;
+      color: #3a2e00;
+      font-weight: 700;
+    }
+    nav .dropdown > button:hover {
+      color: #ffb22c;
+    }
+    nav .dropdown > button:focus {
+      outline: none;
+      color: #ffb22c;
+    }
+    nav .dropdown-menu {
+      border-color: #ffb22c;
+    }
+    nav .border-\[\#d9b310\] {
+      border-color: #ffb22c !important;
+    }
+    nav .bg-\[\#d9b310\] {
+      background-color: #ffb22c !important;
+      color: #3a2e00 !important;
+    }
+    nav .hover\:bg-\[\#b5940e\]:hover {
+      background-color: #f3c623 !important;
+      color: #fff9e6 !important;
+    }
+    nav .text-\[\#d9b310\] {
+      color: #ffb22c !important;
+    }
+    nav .hover\:text-\[\#d9b310\]:hover {
+      color: #ffb22c !important;
+    }
+    /* Buttons */
+    button.bg-yellow, a.bg-yellow {
+      background-color: #ffb22c !important;
+      color: #3a2e00 !important;
+      font-weight: 700;
+      box-shadow: 0 2px 6px rgb(255 178 44 / 0.7);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    button.bg-yellow:hover, a.bg-yellow:hover {
+      background-color: #f3c623 !important;
+      color: #fff9e6 !important;
+    }
+    button.border-yellow, a.border-yellow {
+      border-color: #ffb22c !important;
+      color: #3a2e00 !important;
+      font-weight: 600;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    button.border-yellow:hover, a.border-yellow:hover {
+      background-color: #ffb22c !important;
+      color: #3a2e00 !important;
+    }
+  </style>
+ </head>
+ <body>
+  <!-- Navbar -->
+  <nav>
+   <div class="max-w-7xl mx-auto px-6 py-4 flex flex-wrap items-center justify-between gap-4">
+    <a class="text-2xl font-extrabold flex items-center gap-2" href="index.html" style="color:#ffb22c;">
+     <img alt="Logo of RasaNusantara platform, a stylized yellow and brown traditional Indonesian food icon" height="90" src="logo (2).png" width="90" />
+     <span>SeleraNusantara</span>
+    </a>
+    <button aria-label="Toggle menu" class="md:hidden p-2 rounded-md border" id="menu-toggle" style="color:#ffb22c; border-color:#ffb22c;">
+     <i class="fas fa-bars text-xl"></i>
+    </button>
+    <ul class="hidden md:flex flex-wrap gap-6 items-center ml-auto relative font-semibold text-sm sm:text-base" id="menu" style="color:#3a2e00;">
+     <li><a class="hover:text-[#ffb22c]" href="index.html#beranda" style="color:#3a2e00;">Beranda</a></li>
+     <li><a class="hover:text-[#ffb22c]" href="kuliner.html" style="color:#3a2e00;">Kuliner Daerah</a></li>
+     <li><a class="hover:text-[#ffb22c]" href="index.html#umkm" style="color:#3a2e00;">UMKM</a></li>
+     <li><a class="hover:text-[#ffb22c]" href="AI sejarah.html" style="color:#3a2e00;">AI Sejarah Kuliner</a></li>
+     <li class="dropdown relative">
+      <button aria-haspopup="true" aria-expanded="false" class="flex items-center gap-1 hover:text-[#ffb22c] focus:outline-none" style="color:#3a2e00; font-weight:600;">
+       User Aktif
+       <i class="fas fa-chevron-down text-xs mt-0.5"></i>
+      </button>
+      <div class="dropdown-menu rounded-md shadow-md mt-2">
+       <a href="reward.html" class="block hover:bg-[#ffb22c] hover:text-[#3a2e00]">Reward</a>
+       <a href="index.html#afiliasi" class="block hover:bg-[#ffb22c] hover:text-[#3a2e00]">Afiliasi</a>
+       <a href="leaderboard.html" class="block hover:bg-[#ffb22c] hover:text-[#3a2e00]">Leaderboard</a>
+      </div>
+     </li>
+     <li><a href="premium.html" class="hover:text-[#ffb22c]" style="color:#3a2e00; font-weight:600;">Premium</a></li>
+     <li class="dropdown relative">
+      <button aria-haspopup="true" aria-expanded="false" class="flex items-center gap-1 hover:text-[#ffb22c] focus:outline-none" style="color:#3a2e00; font-weight:600;">
+       Daftar
+       <i class="fas fa-chevron-down text-xs mt-0.5"></i>
+      </button>
+      <div class="dropdown-menu rounded-md shadow-md mt-2">
+       <a href="#" class="block hover:bg-[#ffb22c] hover:text-[#3a2e00]">Masuk</a>
+       <a href="#" class="block hover:bg-[#ffb22c] hover:text-[#3a2e00]">Daftar UMKM</a>
+      </div>
+     </li>
+    </ul>
+   </div>
+   <!-- Mobile menu -->
+   <div class="md:hidden bg-[#fff9e6] px-6 pb-4 hidden" id="mobile-menu" style="color:#3a2e00;">
+    <ul class="flex flex-col gap-4 font-semibold text-base">
+     <li><a class="hover:text-[#ffb22c]" href="index.html#beranda" onclick="closeMobileMenu()">Beranda</a></li>
+     <li><a class="hover:text-[#ffb22c]" href="kuliner.html" onclick="closeMobileMenu()">Kuliner Daerah</a></li>
+     <li><a class="hover:text-[#ffb22c]" href="index.html#umkm" onclick="closeMobileMenu()">UMKM</a></li>
+     <li><a class="hover:text-[#ffb22c]" href="AI sejarah.html" onclick="closeMobileMenu()">AI Sejarah Kuliner</a></li>
+     <li class="relative">
+      <button aria-haspopup="true" aria-expanded="false" class="w-full text-left font-semibold hover:text-[#ffb22c] flex justify-between items-center" onclick="toggleDropdownMobileUser()" style="color:#3a2e00;">
+       User Aktif
+       <i class="fas fa-chevron-down text-xs"></i>
+      </button>
+      <ul class="hidden mt-2 pl-4 border-l border-[#ffb22c] space-y-2" id="mobile-dropdown-user" style="color:#3a2e00;">
+       <li><a class="hover:text-[#ffb22c]" href="reward.html" onclick="closeMobileMenu()">Reward</a></li>
+       <li><a class="hover:text-[#ffb22c]" href="index.html#afiliasi" onclick="closeMobileMenu()">Afiliasi</a></li>
+       <li><a class="hover:text-[#ffb22c]" href="leader.html" onclick="closeMobileMenu()">Leaderboard</a></li>
+      </ul>
+     </li>
+     <li><a class="hover:text-[#ffb22c]" href="premium.html" onclick="closeMobileMenu()">Premium</a></li>
+     <li class="relative">
+      <button aria-haspopup="true" aria-expanded="false" class="w-full text-left font-semibold hover:text-[#ffb22c] flex justify-between items-center" onclick="toggleDropdownMobileDaftar()" style="color:#3a2e00;">
+       Daftar
+       <i class="fas fa-chevron-down text-xs"></i>
+      </button>
+      <ul class="hidden mt-2 pl-4 border-l border-[#ffb22c] space-y-2" id="mobile-dropdown-daftar" style="color:#3a2e00;">
+       <li><a class="hover:text-[#ffb22c]" href="#" onclick="closeMobileMenu()">Masuk</a></li>
+       <li><a class="hover:text-[#ffb22c]" href="#" onclick="closeMobileMenu()">Daftar UMKM</a></li>
+      </ul>
+     </li>
+    </ul>
+   </div>
+  </nav>
+  <!-- Hero Section -->
+  <section class="bg-white max-w-7xl mx-auto mt-8 rounded-lg shadow-md px-6 py-12 flex flex-col md:flex-row items-center gap-8" id="beranda">
+   <div class="md:w-1/2">
+    <h1 class="text-3xl sm:text-4xl font-extrabold mb-4 leading-tight" style="color:#ffb22c;">
+     Jelajahi &amp; Dukung Kuliner Lokal Indonesia
+    </h1>
+    <p class="text-[#3a2e00] text-base sm:text-lg mb-6">
+     Temukan makanan khas dari berbagai daerah, kenali cerita di baliknya, dan
+     dukung pelaku UMKM kuliner Indonesia melalui platform kami.
+    </p>
+    <a class="inline-block bg-[#ffb22c] text-[#3a2e00] px-6 py-3 rounded-md font-semibold hover:bg-[#f3c623] transition" href="kuliner.html" style="background-color:#ffb22c;">
+     Mulai Jelajah
+    </a>
+   </div>
+   <div class="md:w-1/2 w-full">
+    <img alt="Gambar ilustrasi berbagai makanan khas nusantara dari pelaku UMKM, menampilkan rendang, sate, gudeg, dan pempek dalam piring tradisional dengan latar dapur Indonesia" class="rounded-lg shadow-lg w-full object-cover max-h-[400px]" height="400" src="kliner.jpg" width="600" />
+   </div>
+  </section>
+  <!-- UMKM Marketplace Section -->
+  <section class="max-w-7xl mx-auto mt-12 px-6 py-8 bg-white rounded-lg shadow-md" id="umkm">
+   <h2 class="text-2xl sm:text-3xl font-bold mb-6 text-center" style="color:#ffb22c;">
+    Marketplace UMKM Kuliner
+   </h2>
+   <p class="text-center max-w-3xl mx-auto text-[#555555] mb-8 text-sm sm:text-base" style="color:#3a2e00;">
+    Beli langsung makanan khas dari pelaku UMKM dengan kualitas terjamin dan
+    dukung ekonomi lokal.
+   </p>
+   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8">
+    <!-- Product Card 1 -->
+    <article class="bg-[#fff8d6] rounded-lg shadow-md flex flex-col">
+     <img alt="Rendang Padang dari UMKM dengan kemasan menarik, daging rendang berwarna coklat gelap dengan bumbu kental dan daun jeruk di atasnya" class="rounded-t-lg object-cover w-full h-44 sm:h-48" height="200" src="rendang.jpeg" width="320" />
+     <div class="p-4 flex flex-col flex-grow">
+      <h3 class="font-bold text-lg mb-1" style="color:#3a2e00;">
+       Rendang Padang UMKM
+      </h3>
+      <p class="text-sm text-[#555555] mb-2 flex-grow" style="color:#3a2e00;">
+       Rendang asli Minang dengan bahan pilihan dan proses tradisional.
+      </p>
+      <div class="font-semibold text-xl mb-3" style="color:#3a2e00;">
+       Rp 50.000
+      </div>
+      <button aria-label="Tambah Rendang Padang ke keranjang" class="bg-[#ffb22c] text-[#3a2e00] py-2 rounded-md font-semibold hover:bg-[#f3c623] transition">
+       <i class="fas fa-cart-plus mr-2"></i>
+       Tambah ke Keranjang
+      </button>
+     </div>
+    </article>
+    <!-- Product Card 2 -->
+    <article class="bg-[#fff8d6] rounded-lg shadow-md flex flex-col">
+     <img alt="Gudeg Yogyakarta dari UMKM dengan kemasan tradisional, nasi gudeg berwarna coklat kemerahan dengan telur dan ayam opor di sampingnya" class="rounded-t-lg object-cover w-full h-44 sm:h-48" height="200" src="https://storage.googleapis.com/a1aa/image/9b1ed586-df78-4902-26ba-eb8a957a7310.jpg" width="320" />
+     <div class="p-4 flex flex-col flex-grow">
+      <h3 class="font-bold text-lg mb-1" style="color:#3a2e00;">
+       Gudeg Yogyakarta UMKM
+      </h3>
+      <p class="text-sm text-[#555555] mb-2 flex-grow" style="color:#3a2e00;">
+       Gudeg manis legit khas Yogyakarta, dibuat oleh pelaku UMKM lokal.
+      </p>
+      <div class="font-semibold text-xl mb-3" style="color:#3a2e00;">
+       Rp 40.000
+      </div>
+      <button aria-label="Tambah Gudeg Yogyakarta ke keranjang" class="bg-[#ffb22c] text-[#3a2e00] py-2 rounded-md font-semibold hover:bg-[#f3c623] transition">
+       <i class="fas fa-cart-plus mr-2"></i>
+       Tambah ke Keranjang
+      </button>
+     </div>
+    </article>
+    <!-- Product Card 3 -->
+    <article class="bg-[#fff8d6] rounded-lg shadow-md flex flex-col">
+     <img alt="Pempek Palembang dari UMKM dengan kemasan modern, pempek ikan dengan kuah cuko berwarna coklat gelap dan irisan timun" class="rounded-t-lg object-cover w-full h-44 sm:h-48" height="200" src="https://storage.googleapis.com/a1aa/image/b9f71b21-ea5e-4f7d-a459-35894e16793f.jpg" width="320" />
+     <div class="p-4 flex flex-col flex-grow">
+      <h3 class="font-bold text-lg mb-1" style="color:#3a2e00;">
+       Pempek Palembang UMKM
+      </h3>
+      <p class="text-sm text-[#555555] mb-2 flex-grow" style="color:#3a2e00;">
+       Pempek segar dengan kuah cuka khas Palembang, langsung dari UMKM.
+      </p>
+      <div class="font-semibold text-xl mb-3" style="color:#3a2e00;">
+       Rp 35.000
+      </div>
+      <button aria-label="Tambah Pempek Palembang ke keranjang" class="bg-[#ffb22c] text-[#3a2e00] py-2 rounded-md font-semibold hover:bg-[#f3c623] transition">
+       <i class="fas fa-cart-plus mr-2"></i>
+       Tambah ke Keranjang
+      </button>
+     </div>
+    </article>
+    <!-- Product Card 4 -->
+    <article class="bg-[#fff8d6] rounded-lg shadow-md flex flex-col">
+     <img alt="Ayam Betutu Bali dari UMKM dengan kemasan tradisional, ayam utuh berbumbu rempah dengan daun pisang sebagai alas" class="rounded-t-lg object-cover w-full h-44 sm:h-48" height="200" src="ayam taliwang.jpeg" width="320" />
+     <div class="p-4 flex flex-col flex-grow">
+      <h3 class="font-bold text-lg mb-1" style="color:#3a2e00;">
+       Ayam Betutu Bali UMKM
+      </h3>
+      <p class="text-sm text-[#555555] mb-2 flex-grow" style="color:#3a2e00;">
+       Ayam Betutu dengan bumbu khas Bali, dimasak perlahan oleh UMKM lokal.
+      </p>
+      <div class="font-semibold text-xl mb-3" style="color:#3a2e00;">
+       Rp 45.000
+      </div>
+      <button aria-label="Tambah Ayam Betutu Bali ke keranjang" class="bg-[#ffb22c] text-[#3a2e00] py-2 rounded-md font-semibold hover:bg-[#f3c623] transition">
+       <i class="fas fa-cart-plus mr-2"></i>
+       Tambah ke Keranjang
+      </button>
+     </div>
+    </article>
+   </div>
+  </section>
+  <!-- Fitur Afiliasi Section -->
+  <section class="max-w-7xl mx-auto mt-12 px-6 py-8 bg-white rounded-lg shadow-md" id="afiliasi">
+   <h2 class="text-2xl sm:text-3xl font-bold mb-6 text-center" style="color:#ffb22c;">
+    Program Afiliasi
+   </h2>
+   <p class="text-center max-w-3xl mx-auto text-[#555555] mb-8 text-sm sm:text-base" style="color:#3a2e00;">
+    Dapatkan komisi dengan mempromosikan produk UMKM kuliner lokal. Mudah dan
+    transparan.
+   </p>
+   <div class="flex flex-col md:flex-row items-center gap-6 max-w-5xl mx-auto">
+    <img alt="Ilustrasi program afiliasi dengan pengguna mempromosikan produk kuliner, seorang pria menggunakan laptop dengan ikon produk makanan dan jaringan di layar" class="rounded-lg shadow-lg w-full md:w-1/2 object-cover max-h-[300px]" height="300" src="afil.jpeg" width="400" />
+    <div>
+     <ul class="list-disc list-inside text-[#444444] text-base space-y-3" style="color:#3a2e00;">
+      <li>Daftar gratis dan dapatkan link afiliasi unik untuk setiap produk.</li>
+      <li>Pantau klik, penjualan, dan komisi melalui dashboard afiliasi.</li>
+      <li>Gunakan materi promosi yang kami sediakan untuk memperluas jangkauan.</li>
+      <li>Komisi dibayarkan secara otomatis dan transparan.</li>
+     </ul>
+     <button aria-label="Daftar program afiliasi" class="mt-6 bg-[#ffb22c] text-[#3a2e00] px-6 py-3 rounded-md font-semibold hover:bg-[#f3c623] transition w-full md:w-auto">
+      Daftar Sekarang
+     </button>
+    </div>
+   </div>
+  </section>
+  <!-- Upload Komunitas Section -->
+  <section class="max-w-7xl mx-auto mt-12 px-6 py-8 bg-white rounded-lg shadow-md" id="upload-komunitas">
+   <h2 class="text-2xl sm:text-3xl font-bold mb-6 text-center" style="color:#ffb22c;">
+    Upload Komunitas
+   </h2>
+   <p class="text-center max-w-3xl mx-auto text-[#555555] mb-8 text-sm sm:text-base" style="color:#3a2e00;">
+    Bagikan makanan khas daerah Anda dengan komunitas kami. Upload foto dan cerita makanan daerah Anda untuk dikenal lebih luas.
+   </p>
+   <form class="max-w-3xl mx-auto flex flex-col gap-6" id="uploadForm">
+    <div>
+     <label for="namaMakanan" class="block mb-1 font-semibold" style="color:#3a2e00;">Nama Makanan</label>
+     <input type="text" id="namaMakanan" name="namaMakanan" required class="w-full border border-[#ffb22c] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#ffb22c] bg-[#fff8d6] text-[#3a2e00] font-medium" />
+    </div>
+    <div>
+     <label for="asalDaerah" class="block mb-1 font-semibold" style="color:#3a2e00;">Asal Daerah</label>
+     <input type="text" id="asalDaerah" name="asalDaerah" required class="w-full border border-[#ffb22c] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#ffb22c] bg-[#fff8d6] text-[#3a2e00] font-medium" />
+    </div>
+    <div>
+     <label for="deskripsi" class="block mb-1 font-semibold" style="color:#3a2e00;">Deskripsi</label>
+     <textarea id="deskripsi" name="deskripsi" rows="4" required class="w-full border border-[#ffb22c] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#ffb22c] bg-[#fff8d6] text-[#3a2e00] font-medium"></textarea>
+    </div>
+    <div>
+     <label for="fotoMakanan" class="block mb-1 font-semibold" style="color:#3a2e00;">Foto Makanan</label>
+     <input type="file" id="fotoMakanan" name="fotoMakanan" accept="image/*" required class="w-full text-[#3a2e00]" />
+    </div>
+    <button type="submit" class="bg-[#ffb22c] text-[#3a2e00] px-6 py-3 rounded-md font-semibold hover:bg-[#f3c623] transition w-full md:w-auto">
+     Upload
+    </button>
+   </form>
+   <div id="uploadSuccess" class="hidden max-w-3xl mx-auto mt-4 p-3 bg-green-100 text-green-800 rounded-md text-center font-semibold"></div>
+  </section>
+  <!-- Grub Konsumen Section -->
+  <section class="max-w-7xl mx-auto mt-12 mb-16 px-6 py-8 bg-white rounded-lg shadow-md" id="grub-konsumen">
+   <h2 class="text-2xl sm:text-3xl font-bold mb-6 text-center" style="color:#ffb22c;">
+    Grub Konsumen
+   </h2>
+   <p class="text-center max-w-3xl mx-auto text-[#555555] mb-8 text-sm sm:text-base" style="color:#3a2e00;">
+    Tempat berkumpul dan bertukar informasi seputar makanan daerah dan rekomendasi kuliner terbaik dari seluruh Indonesia. Bergabunglah dan bagikan pengalaman Anda!
+   </p>
+   <div class="max-w-4xl mx-auto bg-[#fff8d6] rounded-lg p-6 shadow-md">
+    <ul class="space-y-4 text-[#3a2e00]" id="grubMessagesList" style="max-height: 300px; overflow-y: auto;">
+     <li class="border-b border-[#ffb22c] pb-3">
+      <strong>Andi:</strong> Ada rekomendasi makanan khas Sulawesi yang wajib dicoba?
+     </li>
+     <li class="border-b border-[#ffb22c] pb-3">
+      <strong>Sari:</strong> Pempek Palembang asli memang juara, coba juga yang di Palembang Utara!
+     </li>
+     <li class="border-b border-[#ffb22c] pb-3">
+      <strong>Budi:</strong> Siapa yang pernah coba sate Madura di daerah saya? Enak banget!
+     </li>
+     <li class="border-b border-[#ffb22c] pb-3">
+      <strong>Rina:</strong> Ada yang tahu tempat jual rendang Padang yang enak dan halal di Jakarta?
+     </li>
+     <li class="border-b border-[#ffb22c] pb-3">
+      <strong>Joko:</strong> Yuk, kita buat event kuliner daerah di kota kita!
+     </li>
+    </ul>
+    <form class="mt-6 flex flex-col gap-4" id="grubForm">
+     <textarea id="grubMessage" rows="3" placeholder="Tulis pesan Anda di sini..." class="w-full border border-[#ffb22c] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#ffb22c] bg-[#fff9e6] text-[#3a2e00] font-medium" required></textarea>
+     <button type="submit" class="self-end bg-[#ffb22c] text-[#3a2e00] px-6 py-2 rounded-md font-semibold hover:bg-[#f3c623] transition">
+      Kirim Pesan
+     </button>
+    </form>
+   </div>
+  </section>
+  <!-- Fitur Premium Section -->
+  <section class="max-w-7xl mx-auto mt-12 px-6 py-8 bg-white rounded-lg shadow-md" id="premium">
+   <h2 class="text-2xl sm:text-3xl font-bold mb-6 text-center" style="color:#ffb22c;">
+    Fitur Premium untuk Penjual
+   </h2>
+   <p class="text-center max-w-3xl mx-auto text-[#555555] mb-8 text-sm sm:text-base" style="color:#3a2e00;">
+    Tingkatkan penjualan dan pemasaran dengan fitur analisis dan promosi
+    eksklusif.
+   </p>
+   <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto text-center">
+    <div class="bg-[#fff8d6] rounded-lg p-6 shadow-md flex flex-col items-center">
+     <i class="fas fa-chart-line text-4xl sm:text-5xl mb-4" style="color:#ffb22c;"></i>
+     <h3 class="font-bold text-xl mb-2" style="color:#3a2e00;">
+      Dashboard Analisis Penjualan
+     </h3>
+     <p class="text-[#444444] text-sm sm:text-base" style="color:#3a2e00;">
+      Pantau performa produk, tren pembelian, dan data pelanggan secara
+      real-time.
+     </p>
+    </div>
+    <div class="bg-[#fff8d6] rounded-lg p-6 shadow-md flex flex-col items-center">
+     <i class="fas fa-bullhorn text-4xl sm:text-5xl mb-4" style="color:#ffb22c;"></i>
+     <h3 class="font-bold text-xl mb-2" style="color:#3a2e00;">
+      Promosi Prioritas
+     </h3>
+     <p class="text-[#444444] text-sm sm:text-base" style="color:#3a2e00;">
+      Produk Anda akan tampil lebih menonjol di halaman utama dan rekomendasi.
+     </p>
+    </div>
+    <div class="bg-[#fff8d6] rounded-lg p-6 shadow-md flex flex-col items-center">
+     <i class="fas fa-chalkboard-teacher text-4xl sm:text-5xl mb-4" style="color:#ffb22c;"></i>
+     <h3 class="font-bold text-xl mb-2" style="color:#3a2e00;">
+      Pelatihan Digital Marketing
+     </h3>
+     <p class="text-[#444444] text-sm sm:text-base" style="color:#3a2e00;">
+      Akses webinar dan materi edukasi untuk meningkatkan kemampuan pemasaran
+      online.
+     </p>
+    </div>
+   </div>
+   <div class="text-center mt-8">
+    <a aria-label="Daftar fitur premium" class="bg-[#ffb22c] text-[#3a2e00] px-8 py-3 rounded-md font-semibold hover:bg-[#f3c623] transition w-full max-w-xs mx-auto md:w-auto inline-block">
+     Daftar Fitur Premium
+    </a>
+   </div>
+  </section>
+  <!-- Footer -->
+  <footer class="bg-[#ffb22c] text-[#3a2e00] py-6 mt-auto">
+   <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+    <p class="text-sm text-center md:text-left">
+     © 2025 RasaNusa. Nikmati perutmu dengan makanan kuliner.
+    </p>
+    <div class="flex gap-6 text-lg justify-center md:justify-start">
+     <a aria-label="Facebook" class="hover:text-[#f3c623]" href="#">
+      <i class="fab fa-facebook-f"></i>
+     </a>
+     <a aria-label="Instagram" class="hover:text-[#f3c623]" href="#">
+      <i class="fab fa-instagram"></i>
+     </a>
+     <a aria-label="Twitter" class="hover:text-[#f3c623]" href="#">
+      <i class="fab fa-twitter"></i>
+     </a>
+    </div>
+   </div>
+  </footer>
+  <!-- Chatbot Toggle Button -->
+  <div id="chatbot-toggle" title="Chat dengan RasaNusantara" style="background-color:#ffb22c; color:#3a2e00;">
+   <i class="fas fa-comment-alt"></i>
+  </div>
+  <!-- Chatbot Window -->
+  <div aria-labelledby="chatbot-header" aria-modal="true" class="flex flex-col" id="chatbot" role="dialog">
+   <div class="bg-[#ffb22c] text-[#3a2e00] p-3 font-semibold flex justify-between items-center" id="chatbot-header">
+    <span>Chatbot RasaNusa 🍽️</span>
+    <button aria-label="Tutup chat" class="text-[#3a2e00] font-bold text-lg cursor-pointer" id="chatbot-close">×</button>
+   </div>
+   <div aria-live="polite" class="p-3 overflow-y-auto bg-[#fff8d6] flex-grow" id="chat" style="max-height: 320px; color:#3a2e00;"></div>
+   <div class="p-3 bg-[#fff9e6] flex gap-2">
+    <input aria-label="Tulis pertanyaan" autocomplete="off" class="flex-grow border border-[#ffb22c] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#ffb22c] bg-[#fff8d6] text-[#3a2e00] font-medium" id="userInput" onkeydown="if(event.key==='Enter'){sendMessage();}" placeholder="Tulis pertanyaan..." type="text" />
+    <button aria-label="Kirim pesan" class="bg-[#ffb22c] text-[#3a2e00] px-4 py-2 rounded-md font-semibold hover:bg-[#f3c623] transition" id="sendBtn">Kirim</button>
+   </div>
+  </div>
+  <script>
+    // Navbar mobile toggle
+    const menuToggle = document.getElementById("menu-toggle");
+    const mobileMenu = document.getElementById("mobile-menu");
+
+    menuToggle.addEventListener("click", () => {
+      if (mobileMenu.classList.contains("hidden")) {
+        mobileMenu.classList.remove("hidden");
+        menuToggle.innerHTML = '<i class="fas fa-times text-xl"></i>';
+      } else {
+        mobileMenu.classList.add("hidden");
+        menuToggle.innerHTML = '<i class="fas fa-bars text-xl"></i>';
+      }
+    });
+
+    function closeMobileMenu() {
+      mobileMenu.classList.add("hidden");
+      menuToggle.innerHTML = '<i class="fas fa-bars text-xl"></i>';
+      // Close dropdowns if open
+      const mobileDropdownUser = document.getElementById("mobile-dropdown-user");
+      if (mobileDropdownUser) mobileDropdownUser.classList.add("hidden");
+      const mobileDropdownDaftar = document.getElementById("mobile-dropdown-daftar");
+      if (mobileDropdownDaftar) mobileDropdownDaftar.classList.add("hidden");
+    }
+
+    // Mobile dropdown toggle for User Aktif
+    function toggleDropdownMobileUser() {
+      const mobileDropdownUser = document.getElementById("mobile-dropdown-user");
+      if (mobileDropdownUser.classList.contains("hidden")) {
+        mobileDropdownUser.classList.remove("hidden");
+      } else {
+        mobileDropdownUser.classList.add("hidden");
+      }
+    }
+    // Mobile dropdown toggle for Daftar
+    function toggleDropdownMobileDaftar() {
+      const mobileDropdownDaftar = document.getElementById("mobile-dropdown-daftar");
+      if (mobileDropdownDaftar.classList.contains("hidden")) {
+        mobileDropdownDaftar.classList.remove("hidden");
+      } else {
+        mobileDropdownDaftar.classList.add("hidden");
+      }
+    }
+
+    // Chatbot toggle
+    const chatbotToggle = document.getElementById("chatbot-toggle");
+    const chatbot = document.getElementById("chatbot");
+    const chatbotClose = document.getElementById("chatbot-close");
+    const chat = document.getElementById("chat");
+    const userInput = document.getElementById("userInput");
+    const sendBtn = document.getElementById("sendBtn");
+
+    chatbotToggle.addEventListener("click", () => {
+      if (chatbot.style.display === "flex") {
+        chatbot.style.display = "none";
+      } else {
+        chatbot.style.display = "flex";
+        userInput.focus();
+      }
+    });
+
+    chatbotClose.addEventListener("click", () => {
+      chatbot.style.display = "none";
+      chatbotToggle.focus();
+    });
+
+    function addMessage(text, sender) {
+      const div = document.createElement("div");
+      div.className = `chatbot-message ${sender}`;
+      div.textContent = text;
+      chat.appendChild(div);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function sendMessage() {
+      const userText = userInput.value.trim();
+      if (!userText) return;
+      addMessage(userText, "user");
+      userInput.value = "";
+      handleUserInput(userText);
+    }
+
+    function handleUserInput(text) {
+      const dataKuliner = [
+        { Nama: "Sate Madura", Asal: "Madura, Jawa Timur", Harga: 20000, Deskripsi: "Sate ayam atau kambing khas Madura yang disajikan dengan bumbu kacang kental dan lontong.", Kategori: "Daging" },
+        { Nama: "Pempek", Asal: "Palembang, Sumatera Selatan", Harga: 25000, Deskripsi: "Olahan ikan dan sagu yang disajikan dengan kuah cuko khas Palembang.", Kategori: "Ikan" },
+        { Nama: "Gudeg", Asal: "Yogyakarta", Harga: 30000, Deskripsi: "Masakan nangka muda dengan rasa manis, biasanya disajikan dengan ayam, telur, dan sambal krecek.", Kategori: "Sayur" },
+        { Nama: "Coto Makassar", Asal: "Makassar, Sulawesi Selatan", Harga: 35000, Deskripsi: "Sup daging sapi dengan bumbu rempah khas Makassar, disajikan dengan ketupat.", Kategori: "Sup/Daging" },
+        { Nama: "Rendang", Asal: "Padang, Sumatera Barat", Harga: 40000, Deskripsi: "Daging sapi dimasak dengan santan dan rempah-rempah khas Minang dalam waktu lama.", Kategori: "Daging" },
+        { Nama: "Papeda", Asal: "Papua dan Maluku", Harga: 20000, Deskripsi: "Makanan berbahan dasar sagu yang disajikan dengan kuah ikan kuning.", Kategori: "Sagu/Ikan" },
+        { Nama: "Ayam Taliwang", Asal: "Lombok, NTB", Harga: 30000, Deskripsi: "Ayam bakar dengan sambal khas Lombok yang pedas menyengat.", Kategori: "Daging" },
+        { Nama: "Soto Banjar", Asal: "Banjarmasin, Kalimantan Selatan", Harga: 25000, Deskripsi: "Soto ayam berkuah bening dengan tambahan perkedel, telur rebus, dan ketupat.", Kategori: "Sup" },
+        { Nama: "Ayam Betutu", Asal: "Bali", Harga: 35000, Deskripsi: "Ayam utuh berbumbu rempah khas Bali, dimasak dengan cara dikukus dan dibakar.", Kategori: "Daging" },
+        { Nama: "Bubur Manado", Asal: "Manado, Sulawesi Utara", Harga: 20000, Deskripsi: "Bubur nasi campur sayuran seperti bayam, jagung, dan kemangi.", Kategori: "Sayur/Nasi" }
+      ];
+
+      const lower = text.toLowerCase();
+      let response = "Maaf, saya belum bisa memahami pertanyaan itu. Coba tanya makanan dari daerah, kategori, atau harga tertentu ya!";
+
+      // Cari berdasarkan nama makanan
+      const byName = dataKuliner.find(item => lower.includes(item.Nama.toLowerCase()));
+      if (byName) {
+        response = `🍽️ *${byName.Nama}*\nAsal: ${byName.Asal}\nHarga: Rp${byName.Harga}\nDeskripsi: ${byName.Deskripsi}`;
+        return setTimeout(() => addMessage(response, "bot"), 500);
+      }
+
+      // Cari berdasarkan asal/daerah
+      const daerah = dataKuliner.filter(item => lower.includes(item.Asal.toLowerCase()) || lower.includes(item.Asal.split(",")[0].toLowerCase()));
+      if (daerah.length > 0) {
+        response = `Berikut makanan dari ${daerah[0].Asal}:\n\n` + daerah.map(m => `🍽️ ${m.Nama} - Rp${m.Harga}`).join("\n");
+        return setTimeout(() => addMessage(response, "bot"), 500);
+      }
+
+      // Cari berdasarkan kategori
+      const kategoriList = ["daging", "ikan", "sayur", "sup", "nasi", "sagu"];
+      const kategoriDetected = kategoriList.find(k => lower.includes(k));
+      if (kategoriDetected) {
+        const hasilKategori = dataKuliner.filter(item => item.Kategori.toLowerCase().includes(kategoriDetected));
+        if (hasilKategori.length > 0) {
+          response = `Berikut makanan kategori *${kategoriDetected}*:\n\n` + hasilKategori.map(m => `🍽️ ${m.Nama} - Rp${m.Harga}`).join("\n");
+        } else {
+          response = `Maaf, tidak ditemukan makanan dengan kategori ${kategoriDetected}`;
+        }
+        return setTimeout(() => addMessage(response, "bot"), 500);
+      }
+
+      // Cari berdasarkan harga (budget)
+      const budgetMatch = text.match(/(\d+)\s*(ribu|rb|k)?/);
+      if (budgetMatch) {
+        const budget = parseInt(budgetMatch[1]) * (budgetMatch[2] ? 1000 : 1);
+        const hasilBudget = dataKuliner.filter(item => item.Harga <= budget);
+        if (hasilBudget.length > 0) {
+          response = `Makanan dengan harga di bawah Rp${budget}:\n\n` + hasilBudget.map(m => `🍽️ ${m.Nama} - Rp${m.Harga}`).join("\n");
+        } else {
+          response = `Maaf, tidak ada makanan dengan harga di bawah Rp${budget}`;
+        }
+        return setTimeout(() => addMessage(response, "bot"), 500);
+      }
+
+      // Balasan default
+      setTimeout(() => addMessage(response, "bot"), 500);
+    }
+
+    // Upload Komunitas form handler
+    const uploadForm = document.getElementById("uploadForm");
+    const uploadSuccess = document.getElementById("uploadSuccess");
+    uploadForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const nama = uploadForm.namaMakanan.value.trim();
+      const daerah = uploadForm.asalDaerah.value.trim();
+      const deskripsi = uploadForm.deskripsi.value.trim();
+      const foto = uploadForm.fotoMakanan.files[0];
+
+      if (!nama || !daerah || !deskripsi || !foto) {
+        alert("Mohon lengkapi semua field dan upload foto.");
+        return;
+      }
+
+      // Simulate upload and add to a community list (for demo, just show success)
+      uploadSuccess.textContent = `Terima kasih! Makanan "${nama}" dari "${daerah}" berhasil diupload dan akan segera ditinjau.`;
+      uploadSuccess.classList.remove("hidden");
+      uploadForm.reset();
+
+      // Optionally, you could add the uploaded item to a list or send to server here
+    });
+
+    // Grub Konsumen form handler
+    const grubForm = document.getElementById("grubForm");
+    const grubMessagesList = document.getElementById("grubMessagesList");
+    grubForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const messageInput = document.getElementById("grubMessage");
+      const message = messageInput.value.trim();
+      if (!message) return;
+
+      // Create new message element
+      const newMessage = document.createElement("li");
+      newMessage.className = "border-b border-[#ffb22c] pb-3";
+      newMessage.innerHTML = `<strong>Anda:</strong> ${escapeHtml(message)}`;
+
+      // Append and scroll
+      grubMessagesList.appendChild(newMessage);
+      grubMessagesList.scrollTop = grubMessagesList.scrollHeight;
+
+      // Clear input
+      messageInput.value = "";
+    });
+
+    // Simple escape to prevent HTML injection
+    function escapeHtml(text) {
+      const div = document.createElement("div");
+      div.textContent = text;
+      return div.innerHTML;
+    }
+  </script>
+ </body>
+</html>
