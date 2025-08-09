@@ -17,6 +17,15 @@
    input[type="file"] {
      display: none;
    }
+   /* Hide scrollbar for Chrome, Safari and Opera */
+   .scrollbar-hide::-webkit-scrollbar {
+     display: none;
+   }
+   /* Hide scrollbar for IE, Edge and Firefox */
+   .scrollbar-hide {
+     -ms-overflow-style: none;  /* IE and Edge */
+     scrollbar-width: none;  /* Firefox */
+   }
   </style>
  </head>
  <body class="bg-[#B59FFF] min-h-screen flex justify-center items-start p-6">
@@ -25,40 +34,42 @@
    <aside class="bg-[#8B5CF6] rounded-3xl w-full max-w-[280px] flex flex-col justify-between p-6 relative shadow-lg" style="min-height: 720px">
     <div>
      <h1 class="text-white font-extrabold text-2xl mb-10 select-none" style="font-family: 'Poppins', sans-serif">
-      <a href="index.html" class="block">KulinerNusantara.</a>
+      <a class="block" href="index.html">
+       KulinerNusantara.
+      </a>
      </h1>
      <nav class="flex flex-col gap-6 text-white text-sm font-semibold">
-      <a href="jelajahi-daerah.html" class="flex items-center gap-3 bg-[#CDB9FF] text-[#6B4BFF] rounded-full py-2 px-6 w-full hover:bg-[#b9aaff] transition-colors duration-300">
+      <a class="flex items-center gap-3 bg-[#CDB9FF] text-[#6B4BFF] rounded-full py-2 px-6 w-full hover:bg-[#b9aaff] transition-colors duration-300" href="jelajahi-daerah.html">
        <i class="fas fa-map-marker-alt text-lg">
        </i>
        Jelajahi Daerah
       </a>
-      <a href="index.html" class="flex items-center gap-3 hover:text-[#CDB9FF] transition-colors duration-300">
+      <a class="flex items-center gap-3 hover:text-[#CDB9FF] transition-colors duration-300" href="index.html">
        <i class="fas fa-utensils text-sm">
        </i>
        Hidangan Lokal
       </a>
-      <a href="cerita-kuliner.html" class="flex items-center gap-3 hover:text-[#CDB9FF] transition-colors duration-300">
+      <a class="flex items-center gap-3 hover:text-[#CDB9FF] transition-colors duration-300" href="cerita-kuliner.html">
        <i class="fas fa-book-open text-sm">
        </i>
        Cerita Kuliner
       </a>
-      <a href="pesanan.html" class="flex items-center gap-3 hover:text-[#CDB9FF] transition-colors duration-300">
+      <a class="flex items-center gap-3 hover:text-[#CDB9FF] transition-colors duration-300" href="pesanan.html">
        <i class="fas fa-shopping-cart text-sm">
        </i>
        Pesanan
       </a>
-      <a href="riwayat-pesanan.html" class="flex items-center gap-3 hover:text-[#CDB9FF] transition-colors duration-300">
+      <a class="flex items-center gap-3 hover:text-[#CDB9FF] transition-colors duration-300" href="riwayat-pesanan.html">
        <i class="fas fa-history text-sm">
        </i>
        Riwayat Pesanan
       </a>
-      <a href="tagihan.html" class="flex items-center gap-3 hover:text-[#CDB9FF] transition-colors duration-300">
+      <a class="flex items-center gap-3 hover:text-[#CDB9FF] transition-colors duration-300" href="tagihan.html">
        <i class="fas fa-file-invoice text-sm">
        </i>
        Tagihan
       </a>
-      <a href="pengaturan.html" class="flex items-center gap-3 hover:text-[#CDB9FF] transition-colors duration-300">
+      <a class="flex items-center gap-3 hover:text-[#CDB9FF] transition-colors duration-300" href="pengaturan.html">
        <i class="fas fa-cog text-sm">
        </i>
        Pengaturan
@@ -105,7 +116,7 @@
      <h2 class="text-[#6B4BFF] font-semibold text-lg select-none">
       Selamat datang, Zack
      </h2>
-     <div class="flex-1 max-w-xl">
+     <div class="flex-1 max-w-xl w-full">
       <input class="w-full rounded-full py-2 px-6 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6B4BFF]" placeholder="Cari kuliner daerah favoritmu..." type="search"/>
      </div>
      <div class="flex items-center gap-3">
@@ -125,7 +136,7 @@
      </div>
     </div>
     <!-- Storytelling Banner -->
-    <section class="relative rounded-3xl overflow-hidden" style="background: linear-gradient(90deg, #6B4BFF 0%, #A98FFF 100%)">
+    <section class="relative rounded-3xl overflow-hidden">
      <img alt="Nasi Tumpeng tradisional Indonesia dengan nasi kuning dan lauk pauk" class="w-full h-28 object-cover rounded-3xl" height="120" src="https://storage.googleapis.com/a1aa/image/72ab5139-9316-460c-2699-0c8dcbd1fe9b.jpg" width="600"/>
      <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-[#6B4BFF]/90 to-transparent rounded-3xl flex flex-col justify-center pl-6 pr-6">
       <h3 class="text-white font-bold text-xl mb-1">
@@ -206,7 +217,7 @@
       </button>
      </div>
     </section>
-    <!-- Popular Dishes -->
+    <!-- Popular Dishes with Storytelling -->
     <section class="flex flex-col gap-3">
      <div class="flex justify-between items-center">
       <h4 class="text-[#6B4BFF] font-semibold text-sm select-none">
@@ -218,100 +229,91 @@
      </div>
      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
       <!-- Dish 1 -->
-      <article class="relative rounded-2xl overflow-hidden shadow-md border border-gray-200">
-       <img alt="Rendang, masakan daging pedas khas Padang" class="w-full h-44 object-cover" height="180" src="rendang.jpeg" width="300"/>
+      <article class="relative rounded-2xl overflow-hidden shadow-md border border-gray-200 flex flex-col">
+       <img alt="Rendang, masakan daging pedas khas Padang" class="w-full h-44 object-cover" height="180" src="https://storage.googleapis.com/a1aa/image/50704db6-7928-4ea2-082e-f7b968542ca3.jpg" width="300"/>
        <div class="absolute top-2 left-2 bg-[#FF2E63] text-white text-xs font-semibold px-2 py-0.5 rounded">
         Diskon 20%
        </div>
-       <div class="p-3">
+       <div class="p-3 flex flex-col flex-1">
         <div class="flex items-center gap-1 mb-1">
-         <i class="fas fa-star text-yellow-400 text-xs">
-         </i>
-         <i class="fas fa-star text-yellow-400 text-xs">
-         </i>
-         <i class="fas fa-star text-yellow-400 text-xs">
-         </i>
-         <i class="fas fa-star text-yellow-400 text-xs">
-         </i>
-         <i class="fas fa-star-half-alt text-yellow-400 text-xs">
-         </i>
+         <i class="fas fa-star text-yellow-400 text-xs"></i>
+         <i class="fas fa-star text-yellow-400 text-xs"></i>
+         <i class="fas fa-star text-yellow-400 text-xs"></i>
+         <i class="fas fa-star text-yellow-400 text-xs"></i>
+         <i class="fas fa-star-half-alt text-yellow-400 text-xs"></i>
         </div>
         <h5 class="text-xs font-semibold text-gray-700 mb-1 select-none">
          Rendang Padang
         </h5>
+        <p class="text-gray-500 text-xs mb-2 flex-1 select-none">
+         Rendang adalah masakan daging khas Minangkabau yang dimasak dengan santan dan rempah-rempah selama berjam-jam hingga kering dan berwarna coklat gelap. Hidangan ini memiliki sejarah panjang sebagai makanan upacara dan simbol kekayaan budaya Sumatera Barat.
+        </p>
         <div class="flex justify-between items-center">
          <span class="text-[#6B4BFF] font-semibold text-sm select-none price" data-price="112500">
           Rp112.500
          </span>
          <button aria-label="Tambah Rendang Padang" class="bg-[#6B4BFF] text-white rounded-lg w-7 h-7 flex justify-center items-center add-btn">
-          <i class="fas fa-plus text-xs">
-          </i>
+          <i class="fas fa-plus text-xs"></i>
          </button>
         </div>
        </div>
       </article>
       <!-- Dish 2 -->
-      <article class="relative rounded-2xl overflow-hidden shadow-md border border-gray-200">
-       <img alt="Gudeg, masakan nangka muda khas Yogyakarta" class="w-full h-44 object-cover" height="180" src="gudeg.jpg" width="300"/>
+      <article class="relative rounded-2xl overflow-hidden shadow-md border border-gray-200 flex flex-col">
+       <img alt="Gudeg, masakan nangka muda khas Yogyakarta" class="w-full h-44 object-cover" height="180" src="https://storage.googleapis.com/a1aa/image/0c5c18ef-3398-4299-6c08-1ffaf166480a.jpg" width="300"/>
        <div class="absolute top-2 left-2 bg-[#FF2E63] text-white text-xs font-semibold px-2 py-0.5 rounded">
         Diskon 15%
        </div>
-       <div class="p-3">
+       <div class="p-3 flex flex-col flex-1">
         <div class="flex items-center gap-1 mb-1">
-         <i class="fas fa-star text-yellow-400 text-xs">
-         </i>
-         <i class="fas fa-star text-yellow-400 text-xs">
-         </i>
-         <i class="fas fa-star text-yellow-400 text-xs">
-         </i>
-         <i class="fas fa-star text-yellow-400 text-xs">
-         </i>
-         <i class="fas fa-star-half-alt text-yellow-400 text-xs">
-         </i>
+         <i class="fas fa-star text-yellow-400 text-xs"></i>
+         <i class="fas fa-star text-yellow-400 text-xs"></i>
+         <i class="fas fa-star text-yellow-400 text-xs"></i>
+         <i class="fas fa-star text-yellow-400 text-xs"></i>
+         <i class="fas fa-star-half-alt text-yellow-400 text-xs"></i>
         </div>
         <h5 class="text-xs font-semibold text-gray-700 mb-1 select-none">
          Gudeg Jogja
         </h5>
+        <p class="text-gray-500 text-xs mb-2 flex-1 select-none">
+         Gudeg adalah masakan khas Yogyakarta yang terbuat dari nangka muda yang dimasak dengan santan dan gula merah. Hidangan ini memiliki akar sejarah dari tradisi kerajaan Mataram dan menjadi simbol kehangatan dan kekayaan budaya Jawa.
+        </p>
         <div class="flex justify-between items-center">
          <span class="text-[#6B4BFF] font-semibold text-sm select-none price" data-price="90000">
           Rp90.000
          </span>
          <button aria-label="Tambah Gudeg Jogja" class="bg-[#6B4BFF] text-white rounded-lg w-7 h-7 flex justify-center items-center add-btn">
-          <i class="fas fa-plus text-xs">
-          </i>
+          <i class="fas fa-plus text-xs"></i>
          </button>
         </div>
        </div>
       </article>
       <!-- Dish 3 -->
-      <article class="relative rounded-2xl overflow-hidden shadow-md border border-gray-200">
-       <img alt="Sate Madura, sate daging dengan saus kacang" class="w-full h-44 object-cover" height="180" src="sate.jpg" width="300"/>
+      <article class="relative rounded-2xl overflow-hidden shadow-md border border-gray-200 flex flex-col">
+       <img alt="Sate Madura, sate daging dengan saus kacang" class="w-full h-44 object-cover" height="180" src="https://storage.googleapis.com/a1aa/image/e8656d5e-e6d0-4f17-bdf9-1979aa32c122.jpg" width="300"/>
        <div class="absolute top-2 left-2 bg-[#FF2E63] text-white text-xs font-semibold px-2 py-0.5 rounded">
         Diskon 10%
        </div>
-       <div class="p-3">
+       <div class="p-3 flex flex-col flex-1">
         <div class="flex items-center gap-1 mb-1">
-         <i class="fas fa-star text-yellow-400 text-xs">
-         </i>
-         <i class="fas fa-star text-yellow-400 text-xs">
-         </i>
-         <i class="fas fa-star text-yellow-400 text-xs">
-         </i>
-         <i class="fas fa-star text-yellow-400 text-xs">
-         </i>
-         <i class="fas fa-star-half-alt text-yellow-400 text-xs">
-         </i>
+         <i class="fas fa-star text-yellow-400 text-xs"></i>
+         <i class="fas fa-star text-yellow-400 text-xs"></i>
+         <i class="fas fa-star text-yellow-400 text-xs"></i>
+         <i class="fas fa-star text-yellow-400 text-xs"></i>
+         <i class="fas fa-star-half-alt text-yellow-400 text-xs"></i>
         </div>
         <h5 class="text-xs font-semibold text-gray-700 mb-1 select-none">
          Sate Madura
         </h5>
+        <p class="text-gray-500 text-xs mb-2 flex-1 select-none">
+         Sate Madura adalah sate khas dari Pulau Madura yang terkenal dengan bumbu kacang yang kaya rasa dan aroma. Hidangan ini telah menjadi ikon kuliner Indonesia dan sering disajikan dalam berbagai acara tradisional.
+        </p>
         <div class="flex justify-between items-center">
          <span class="text-[#6B4BFF] font-semibold text-sm select-none price" data-price="75000">
           Rp75.000
          </span>
          <button aria-label="Tambah Sate Madura" class="bg-[#6B4BFF] text-white rounded-lg w-7 h-7 flex justify-center items-center add-btn">
-          <i class="fas fa-plus text-xs">
-          </i>
+          <i class="fas fa-plus text-xs"></i>
          </button>
         </div>
        </div>
@@ -331,7 +333,7 @@
      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
       <!-- Recent 1 -->
       <article class="rounded-2xl overflow-hidden shadow-md border border-gray-200 relative">
-       <img alt="Nasi Liwet Solo, nasi dengan lauk khas Solo" class="w-full h-44 object-cover rounded-t-2xl" height="180" src="https://storage.googleapis.com/a1aa/image/fee5003b-affa-491d-36b8-0b0f37c6276f.jpg" width="300"/>
+       <img alt="Nasi Liwet Solo, nasi dengan lauk khas Solo" class="w-full h-44 object-cover rounded-t-2xl" height="180" src="https://storage.googleapis.com/a1aa/image/7f14d8d1-18f1-4fa1-03df-dfb733902865.jpg" width="300"/>
        <div class="absolute top-2 right-2 bg-yellow-400 rounded-full w-5 h-5 flex justify-center items-center text-white text-xs font-bold">
         ✓
        </div>
@@ -349,7 +351,7 @@
       </article>
       <!-- Recent 2 -->
       <article class="rounded-2xl overflow-hidden shadow-md border border-gray-200 relative">
-       <img alt="Pempek Palembang, kue ikan khas Palembang" class="w-full h-44 object-cover rounded-t-2xl" height="180" src="pempek.jpg" width="300"/>
+       <img alt="Pempek Palembang, kue ikan khas Palembang" class="w-full h-44 object-cover rounded-t-2xl" height="180" src="https://storage.googleapis.com/a1aa/image/5dcb358e-e3f6-487e-8f1d-713811f585eb.jpg" width="300"/>
        <div class="absolute top-2 right-2 bg-yellow-400 rounded-full w-5 h-5 flex justify-center items-center text-white text-xs font-bold">
         ✓
        </div>
@@ -367,7 +369,7 @@
       </article>
       <!-- Recent 3 -->
       <article class="rounded-2xl overflow-hidden shadow-md border border-gray-200 relative">
-       <img alt="Bakso, sup bola daging khas Indonesia" class="w-full h-44 object-cover rounded-t-2xl" height="180" src="https://storage.googleapis.com/a1aa/image/f61b5400-208a-4f9b-24e6-ccdc9e787af5.jpg" width="300"/>
+       <img alt="Bakso, sup bola daging khas Indonesia" class="w-full h-44 object-cover rounded-t-2xl" height="180" src="https://storage.googleapis.com/a1aa/image/173c9fee-3342-48c9-537d-73690554552e.jpg" width="300"/>
        <div class="absolute top-2 right-2 bg-yellow-400 rounded-full w-5 h-5 flex justify-center items-center text-white text-xs font-bold">
         ✓
        </div>
@@ -432,8 +434,10 @@
      <h4 class="text-[#6B4BFF] font-semibold text-sm select-none">
       Menu Pesanan
      </h4>
-     <div id="order-list" class="flex flex-col gap-3 min-h-[150px]">
-      <p class="text-gray-400 text-xs select-none">Belum ada pesanan</p>
+     <div class="flex flex-col gap-3 min-h-[150px]" id="order-list">
+      <p class="text-gray-400 text-xs select-none">
+       Belum ada pesanan
+      </p>
      </div>
      <div class="border-t border-gray-300 pt-3 flex justify-between text-xs text-gray-500 select-none">
       <span>
@@ -457,18 +461,31 @@
      <h4 class="text-[#6B4BFF] font-semibold text-sm select-none">
       Metode Pembayaran
      </h4>
-     <select id="payment-method" class="w-full rounded-lg border border-gray-300 p-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#6B4BFF]">
-      <option value="" disabled selected>Pilih metode pembayaran</option>
-      <option value="transfer">Transfer Bank</option>
-      <option value="ovo">OVO</option>
-      <option value="gopay">GoPay</option>
-      <option value="dana">Dana</option>
+     <select class="w-full rounded-lg border border-gray-300 p-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#6B4BFF]" id="payment-method">
+      <option disabled="" selected="" value="">
+       Pilih metode pembayaran
+      </option>
+      <option value="transfer">
+       Transfer Bank
+      </option>
+      <option value="ovo">
+       OVO
+      </option>
+      <option value="gopay">
+       GoPay
+      </option>
+      <option value="dana">
+       Dana
+      </option>
      </select>
-     <label for="payment-proof" class="cursor-pointer bg-[#6B4BFF] text-white text-xs font-semibold rounded-lg py-2 px-4 text-center hover:bg-[#5a3edb] transition-colors">
-      <i class="fas fa-upload mr-2"></i> Unggah Bukti Pembayaran
+     <label class="cursor-pointer bg-[#6B4BFF] text-white text-xs font-semibold rounded-lg py-2 px-4 text-center hover:bg-[#5a3edb] transition-colors" for="payment-proof">
+      <i class="fas fa-upload mr-2">
+      </i>
+      Unggah Bukti Pembayaran
      </label>
-     <input type="file" id="payment-proof" accept="image/*"/>
-     <p id="file-name" class="text-xs text-gray-600 break-words"></p>
+     <input accept="image/*" id="payment-proof" type="file"/>
+     <p class="text-xs text-gray-600 break-words" id="file-name">
+     </p>
     </div>
     <!-- Coupon and Checkout -->
     <div class="flex flex-col gap-4">
@@ -477,7 +494,7 @@
       </i>
       Punya kode kupon?
      </button>
-     <button id="checkout-btn" class="bg-[#3B00B7] text-white text-sm font-semibold rounded-3xl py-3 px-6 w-full disabled:opacity-50" disabled type="button">
+     <button class="bg-[#3B00B7] text-white text-sm font-semibold rounded-3xl py-3 px-6 w-full disabled:opacity-50" disabled="" id="checkout-btn" type="button">
       Checkout
      </button>
     </div>
